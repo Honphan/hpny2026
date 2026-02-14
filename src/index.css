@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Great+Vibes&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --tet-red: #DC2626;
+    --tet-red-dark: #991B1B;
+    --tet-gold: #D4AF37;
+    --tet-gold-light: #FFD700;
+    --tet-lacquer: #1A0A0A;
+    --tet-peach: #FFB7C5;
+    --tet-silk: #FFF0F0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Philosopher', serif;
+    background-color: var(--tet-lacquer);
+    color: var(--tet-silk);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: rgba(212, 175, 55, 0.4);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--tet-lacquer);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--tet-gold);
+    border-radius: 3px;
+  }
+}
+
+@layer components {
+  .tet-text-shadow {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5), 0 0 40px rgba(212, 175, 55, 0.2);
+  }
+
+  .tet-border-gold {
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    position: relative;
+  }
+
+  .tet-border-gold::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .glass-red {
+    background: rgba(153, 27, 27, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .glass-dark {
+    background: rgba(26, 10, 10, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  .tet-input {
+    @apply w-full px-6 py-4 rounded-xl bg-tet-red-900/50 border-2 border-tet-gold-500/30 
+           text-tet-silk placeholder:text-tet-red-300/50 font-body text-lg
+           focus:outline-none focus:border-tet-gold-400 focus:ring-2 focus:ring-tet-gold-400/20
+           transition-all duration-300;
+  }
+
+  .tet-btn {
+    @apply px-8 py-3 rounded-xl font-body font-bold text-lg
+           bg-gradient-to-r from-tet-gold-500 to-tet-gold-300 text-tet-lacquer
+           hover:from-tet-gold-400 hover:to-tet-gold-200
+           active:scale-95 transition-all duration-300
+           shadow-gold hover:shadow-gold-lg;
+  }
+
+  .tet-btn-outline {
+    @apply px-6 py-2.5 rounded-xl font-body font-bold
+           border-2 border-tet-gold-500/50 text-tet-gold-300
+           hover:bg-tet-gold-500/10 hover:border-tet-gold-400
+           active:scale-95 transition-all duration-300;
+  }
+
+  .petal {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(ellipse at center, #FFB7C5 0%, #FF8FA3 40%, transparent 70%);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .petal-large {
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(ellipse at center, #FFC0CB 0%, #FFB7C5 40%, transparent 70%);
+  }
+
+  /* Noise texture overlay */
+  .noise-overlay::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    z-index: 1;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #D4AF37, #FFD700, #D4AF37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+  .animate-delay-700 { animation-delay: 700ms; }
+  .animate-delay-1000 { animation-delay: 1000ms; }
+  .animate-delay-1500 { animation-delay: 1500ms; }
+  .animate-delay-2000 { animation-delay: 2000ms; }
+}
