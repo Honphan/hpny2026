@@ -69,7 +69,7 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
                     Gửi Lời Chúc Lại
                   </h3>
                   <p className="text-tet-red-200/60 text-sm mt-1 font-body">
-                    Lì xì lại một lời chúc cho chủ nhà nhé!
+                    Lì xì lại một lời chúc cho bé khum bé bùn !
                   </p>
                 </div>
 
@@ -79,7 +79,7 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
                     <textarea
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Viết lời chúc của bạn tại đây..."
+                      placeholder="Viết lời chúc cho bé tại đây..."
                       rows={4}
                       className="tet-input resize-none"
                       maxLength={500}

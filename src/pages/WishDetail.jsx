@@ -97,9 +97,9 @@ export default function WishDetail() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 3.5 }}
-          className="mt-6 text-tet-red-300/30 text-xs font-body text-center"
+          className="mt-6 text-tet-red-300/100 text-sm font-body text-center"
         >
-          Made with ❤️ — Tết Bính Ngọ 2026
+          Made by HonPhan ❤️ — Tết Bính Ngọ 2026
         </motion.p>
       </div>
 

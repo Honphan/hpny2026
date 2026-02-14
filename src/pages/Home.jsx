@@ -107,7 +107,7 @@ export default function Home() {
                     setUsername(e.target.value)
                     setError('')
                   }}
-                  placeholder="Nhập tên của bạn..."
+                  placeholder="Nhập tên bé vào đây..."
                   className="tet-input text-center animate-pulse-gold"
                   autoFocus
                 />

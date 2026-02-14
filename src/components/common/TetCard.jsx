@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const capitalize = (str) =>
+  str
+    ?.split(' ')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ') ?? ''
+
 export default function TetCard({ content, username }) {
   const [isOpen, setIsOpen] = useState(false)
   const [showContent, setShowContent] = useState(false)
@@ -49,7 +55,7 @@ export default function TetCard({ content, username }) {
                   Lì Xì Dành Cho Bạn
                 </h3>
                 <p className="font-calligraphy text-tet-gold-200 text-lg">
-                  {username}
+                  {capitalize(username)}
                 </p>
                 <motion.p
                   animate={{ opacity: [0.5, 1, 0.5] }}
@@ -105,7 +111,7 @@ export default function TetCard({ content, username }) {
                   transition={{ delay: 0.4 }}
                   className="text-center font-calligraphy text-2xl text-tet-gold-300 mb-6"
                 >
-                  Gửi đến {username} thân mến,
+                  Gửi đến {capitalize(username)} thân mến,
                 </motion.h3>
 
                 {/* Wish content — typewriter style */}

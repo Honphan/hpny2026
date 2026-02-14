@@ -77,7 +77,7 @@ export default function AddWish() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="vd: ngocnhi, hoanganh..."
+              placeholder="vd: xuanhon, honphan ..."
               className="tet-input"
             />
           </div>
@@ -88,7 +88,7 @@ export default function AddWish() {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Viết lời chúc Tết cho người này...&#10;Mỗi dòng sẽ hiện ra từ từ theo hiệu ứng typewriter."
+              placeholder="Viết lời chúc Tết ..."
               rows={5}
               className="tet-input resize-none"
             />
