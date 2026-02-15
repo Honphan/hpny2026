@@ -201,7 +201,7 @@ export default function LuckyMoneyWheel({ username, onClose }) {
               <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 
                               text-tet-lacquer font-bold text-3xl px-8 py-3 rounded-2xl 
                               shadow-gold-lg border-2 border-yellow-300/50">
-                💰 {formatAmount(result.amount)} VNĐ
+                {formatAmount(result.amount)} VNĐ
               </div>
               <motion.div
                 animate={{ scale: [0, 1, 0], opacity: [0, 1, 0] }}
