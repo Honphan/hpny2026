@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Send, Heart } from 'lucide-react'
-import { addFeedback } from '../../firebase/services'
+import { addFeedback, getSpinResult } from '../../firebase/services'
+import LuckyMoneyWheel from './LuckyMoneyWheel'
 
 export default function FeedbackModal({ isOpen, onClose, username }) {
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [showWheel, setShowWheel] = useState(false)
+  const [existingSpinResult, setExistingSpinResult] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,12 +21,32 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
     
     if (success) {
       setSent(true)
+      // Check if user already spun
+      const spinResult = await getSpinResult(username)
       setTimeout(() => {
-        onClose()
+        if (spinResult) {
+          // Already spun before — show existing result
+          setExistingSpinResult(spinResult)
+        } else {
+          // First time — show wheel
+          setShowWheel(true)
+        }
         setSent(false)
-        setMessage('')
-      }, 2000)
+      }, 1500)
     }
+  }
+
+  const handleClose = () => {
+    onClose()
+    setMessage('')
+    setSent(false)
+    setShowWheel(false)
+    setExistingSpinResult(null)
+  }
+
+  const formatAmount = (amount) => {
+    if (amount >= 1000) return `${amount / 1000}K`
+    return `${amount}`
   }
 
   return (
@@ -40,7 +63,7 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
 
@@ -54,13 +77,63 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
           >
             {/* Close button */}
             <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-tet-gold-300/60 hover:text-tet-gold-300 transition-colors"
+              onClick={handleClose}
+              className="absolute top-4 right-4 text-tet-gold-300/60 hover:text-tet-gold-300 transition-colors z-10"
             >
               <X size={20} />
             </button>
 
-            {!sent ? (
+            {showWheel ? (
+              /* === LUCKY MONEY WHEEL === */
+              <LuckyMoneyWheel username={username} onClose={handleClose} />
+            ) : existingSpinResult ? (
+              /* === ALREADY SPUN === */
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="text-center py-6"
+              >
+                <div className="text-5xl mb-4">🧧</div>
+                <h3 className="font-calligraphy text-2xl text-gradient-gold mb-3">
+                  Đã Gửi Thành Công!
+                </h3>
+                <p className="text-tet-red-200/70 font-body mb-4">
+                  Bé đã nhận lì xì <span className="text-yellow-400 font-bold">{formatAmount(existingSpinResult.amount)} VNĐ</span> rồi em nghèo lắm
+                </p>
+                <p className="text-tet-red-200/40 font-body text-xs mb-4">
+                  Tiền mừng tuổi lấy lộc là chính nha 😆
+                </p>
+                <motion.button
+                  onClick={handleClose}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="tet-btn-outline"
+                >
+                  Đóng
+                </motion.button>
+              </motion.div>
+            ) : sent ? (
+              /* === SENDING SUCCESS (brief transition) === */
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="text-center py-8"
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 0.5 }}
+                  className="text-5xl mb-4"
+                >
+                  <Heart className="inline-block text-tet-peach" size={48} fill="currentColor" />
+                </motion.div>
+                <h3 className="font-calligraphy text-2xl text-gradient-gold mb-2">
+                  Đã Gửi Thành Công!
+                </h3>
+                <p className="text-tet-red-200/70 font-body">
+                  Chuẩn bị nhận lì xì nào... 🧧
+                </p>
+              </motion.div>
+            ) : (
               <>
                 {/* Header */}
                 <div className="text-center mb-6">
@@ -111,27 +184,6 @@ export default function FeedbackModal({ isOpen, onClose, username }) {
                   </motion.button>
                 </form>
               </>
-            ) : (
-              /* Success state */
-              <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="text-center py-8"
-              >
-                <motion.div
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 0.5 }}
-                  className="text-5xl mb-4"
-                >
-                  <Heart className="inline-block text-tet-peach" size={48} fill="currentColor" />
-                </motion.div>
-                <h3 className="font-calligraphy text-2xl text-gradient-gold mb-2">
-                  Đã Gửi Thành Công!
-                </h3>
-                <p className="text-tet-red-200/70 font-body">
-                  Cảm ơn bạn đã gửi lời chúc 🧧
-                </p>
-              </motion.div>
             )}
           </motion.div>
         </motion.div>

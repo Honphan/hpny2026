@@ -1,17 +1,30 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, MessageCircle, Clock } from 'lucide-react'
-import { subscribeFeedbacks } from '../../firebase/services'
+import { ArrowLeft, MessageCircle, Clock, Coins } from 'lucide-react'
+import { subscribeFeedbacks, getSpinResult } from '../../firebase/services'
 
 export default function InboxPage() {
   const [feedbacks, setFeedbacks] = useState([])
+  const [spinResults, setSpinResults] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = subscribeFeedbacks((data) => {
+    const unsubscribe = subscribeFeedbacks(async (data) => {
       setFeedbacks(data)
       setLoading(false)
+
+      // Fetch spin results for all feedback users
+      const results = {}
+      await Promise.all(
+        data.map(async (fb) => {
+          const spin = await getSpinResult(fb.fromUser)
+          if (spin) {
+            results[fb.fromUser.toLowerCase().trim()] = spin
+          }
+        })
+      )
+      setSpinResults(results)
     })
     return () => unsubscribe()
   }, [])
@@ -26,6 +39,11 @@ export default function InboxPage() {
       hour: '2-digit',
       minute: '2-digit',
     }).format(date)
+  }
+
+  const formatAmount = (amount) => {
+    if (amount >= 1000) return `${amount / 1000}K`
+    return `${amount}`
   }
 
   return (
@@ -66,38 +84,55 @@ export default function InboxPage() {
         {!loading && (
           <div className="space-y-4">
             <AnimatePresence>
-              {feedbacks.map((fb, index) => (
-                <motion.div
-                  key={fb.id}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="glass-red rounded-2xl p-6 hover:shadow-gold/20 transition-shadow"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-tet-gold-500/20 flex items-center justify-center shrink-0">
-                      <MessageCircle size={18} className="text-tet-gold-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-calligraphy text-lg text-tet-gold-300">
-                          {fb.fromUser}
-                        </h3>
+              {feedbacks.map((fb, index) => {
+                const spin = spinResults[fb.fromUser.toLowerCase().trim()]
+                return (
+                  <motion.div
+                    key={fb.id}
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="glass-red rounded-2xl p-6 hover:shadow-gold/20 transition-shadow"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-tet-gold-500/20 flex items-center justify-center shrink-0">
+                        <MessageCircle size={18} className="text-tet-gold-400" />
                       </div>
-                      <p className="font-body text-tet-silk/80 leading-relaxed">
-                        {fb.message}
-                      </p>
-                      {fb.createdAt && (
-                        <div className="flex items-center gap-1 mt-3 text-tet-red-300/30 text-xs">
-                          <Clock size={12} />
-                          <span>{formatTime(fb.createdAt)}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h3 className="font-calligraphy text-lg text-tet-gold-300">
+                            {fb.fromUser}
+                          </h3>
+                          {spin && (
+                            <span className="inline-flex items-center gap-1 bg-yellow-500/20 text-yellow-400 
+                                           text-xs font-bold px-2 py-0.5 rounded-full border border-yellow-500/30">
+                              <Coins size={12} />
+                              {formatAmount(spin.amount)}
+                            </span>
+                          )}
                         </div>
-                      )}
+                        <p className="font-body text-tet-silk/80 leading-relaxed">
+                          {fb.message}
+                        </p>
+                        {spin?.bankName && (
+                          <div className="mt-2 bg-tet-gold-500/10 border border-tet-gold-500/20 rounded-lg px-3 py-2">
+                            <p className="text-tet-gold-300/80 text-xs font-body">
+                              🏦 {spin.bankName} — STK: <span className="font-bold text-tet-gold-300">{spin.accountNumber}</span>
+                            </p>
+                          </div>
+                        )}
+                        {fb.createdAt && (
+                          <div className="flex items-center gap-1 mt-3 text-tet-red-300/30 text-xs">
+                            <Clock size={12} />
+                            <span>{formatTime(fb.createdAt)}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                )
+              })}
             </AnimatePresence>
 
             {feedbacks.length === 0 && (

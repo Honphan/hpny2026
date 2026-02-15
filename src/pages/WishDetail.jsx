@@ -89,7 +89,7 @@ export default function WishDetail() {
           className="mt-8 tet-btn-outline flex items-center gap-2"
         >
           <MessageCircleHeart size={18} />
-          Gửi Lời Chúc Lại
+          Gửi Lời Chúc Cho Bé
         </motion.button>
 
         {/* Decorative bottom text */}
