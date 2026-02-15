@@ -35,9 +35,11 @@
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: var(--tet-lacquer);
   }
+
   ::-webkit-scrollbar-thumb {
     background: var(--tet-gold);
     border-radius: 3px;
@@ -78,25 +80,15 @@
   }
 
   .tet-input {
-    @apply w-full px-6 py-4 rounded-xl bg-tet-red-900/50 border-2 border-tet-gold-500/30 
-           text-tet-silk placeholder:text-tet-red-300/50 font-body text-lg
-           focus:outline-none focus:border-tet-gold-400 focus:ring-2 focus:ring-tet-gold-400/20
-           transition-all duration-300;
+    @apply w-full px-6 py-4 rounded-xl bg-tet-red-900/50 border-2 border-tet-gold-500/30 text-tet-silk placeholder:text-tet-red-300/50 font-body text-lg focus:outline-none focus:border-tet-gold-400 focus:ring-2 focus:ring-tet-gold-400/20 transition-all duration-300;
   }
 
   .tet-btn {
-    @apply px-8 py-3 rounded-xl font-body font-bold text-lg
-           bg-gradient-to-r from-tet-gold-500 to-tet-gold-300 text-tet-lacquer
-           hover:from-tet-gold-400 hover:to-tet-gold-200
-           active:scale-95 transition-all duration-300
-           shadow-gold hover:shadow-gold-lg;
+    @apply px-8 py-3 rounded-xl font-body font-bold text-lg bg-gradient-to-r from-tet-gold-500 to-tet-gold-300 text-tet-lacquer hover:from-tet-gold-400 hover:to-tet-gold-200 active:scale-95 transition-all duration-300 shadow-gold hover:shadow-gold-lg;
   }
 
   .tet-btn-outline {
-    @apply px-6 py-2.5 rounded-xl font-body font-bold
-           border-2 border-tet-gold-500/50 text-tet-gold-300
-           hover:bg-tet-gold-500/10 hover:border-tet-gold-400
-           active:scale-95 transition-all duration-300;
+    @apply px-6 py-2.5 rounded-xl font-body font-bold border-2 border-tet-gold-500/50 text-tet-gold-300 hover:bg-tet-gold-500/10 hover:border-tet-gold-400 active:scale-95 transition-all duration-300;
   }
 
   .petal {
@@ -136,14 +128,40 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    display: inline-block;
+    padding-top: 0.2em;
+    margin-top: -0.2em;
   }
 
-  .animate-delay-100 { animation-delay: 100ms; }
-  .animate-delay-200 { animation-delay: 200ms; }
-  .animate-delay-300 { animation-delay: 300ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
-  .animate-delay-700 { animation-delay: 700ms; }
-  .animate-delay-1000 { animation-delay: 1000ms; }
-  .animate-delay-1500 { animation-delay: 1500ms; }
-  .animate-delay-2000 { animation-delay: 2000ms; }
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .animate-delay-700 {
+    animation-delay: 700ms;
+  }
+
+  .animate-delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  .animate-delay-1500 {
+    animation-delay: 1500ms;
+  }
+
+  .animate-delay-2000 {
+    animation-delay: 2000ms;
+  }
 }
